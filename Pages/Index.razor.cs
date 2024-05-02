@@ -53,7 +53,7 @@ namespace BlazorPushGroupLab.Pages
         private async Task EnterRoom(RoomInfo room)
         {
             if (LoginRoom != null)
-                await hubConnection.SendAsync("LeaveFromRoom", UserName, LoginRoom);
+                await hubConnection.SendAsync("LeaveRoom", UserName, LoginRoom);
             await hubConnection.SendAsync("EnterRoom", UserName, room.RoomNo);
             LoginRoom = room.RoomNo;
         }
