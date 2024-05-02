@@ -49,9 +49,9 @@ namespace BlazorPushGroupLab.Pages
 
         }
 
-        public async Task NotifyRoom(string userName, string roomNo, string message)
+        public async Task NotifyRoom(string userName, RoomInfo room)
         {
-            await Clients.Group(roomNo).SendAsync("ReceiveMessageByRoom", roomNo, GetMessage($"{userName} 向教室 {GetRoomName(roomNo)}，發送訊息 : {message}."));
+            await Clients.Group(room.RoomNo).SendAsync("ReceiveMessageByRoom", room.RoomNo, GetMessage($"{userName} 向教室 {GetRoomName(room.RoomNo)}，發送訊息 : {room.Message}."));
 
         }
 

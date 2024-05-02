@@ -5,15 +5,19 @@ namespace BlazorPushGroupLab.Pages
 {
     public partial class Index
     {
+        #region Äæ¦ì
         private List<Data.RoomInfo> AllRooms = new List<Data.RoomInfo>();
-        private bool IsLogon = false;
+        private bool IsLogon => !string.IsNullOrEmpty(UserName);
         private string UserName = "";
         private string LoginRoom = null;
         private HubConnection? hubConnection;
         private List<string> AllMessages = new List<string>();
         private List<string> RoomMessages = new List<string>();
         private string? userInput = "Kimxinfo";
+        public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
+        #endregion
 
+        #region Init
         protected override async Task OnInitializedAsync()
         {
             AllRooms = UserService.GetRooms();
@@ -42,10 +46,11 @@ namespace BlazorPushGroupLab.Pages
 
             await hubConnection.StartAsync();
         }
+        #endregion
 
+        #region Action
         private async Task Login()
         {
-            IsLogon = true;
             UserName = userInput;
             await hubConnection.SendAsync("SendMessage", $"{UserName} µn¤J");
         }
@@ -65,10 +70,11 @@ namespace BlazorPushGroupLab.Pages
 
         private async Task NotifyRoom(RoomInfo room)
         {
-            await hubConnection.SendAsync("NotifyRoom", UserName, room.RoomNo, room.Message);
+            await hubConnection.SendAsync("NotifyRoom", UserName, room);
         }
 
-        public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
+        #endregion
+
 
         public async ValueTask DisposeAsync()
         {
